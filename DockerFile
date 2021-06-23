@@ -1,0 +1,20 @@
+FROM presearch/node:0.9.26-testnet-skinny
+
+# add dnsmasq package
+RUN apk --no-cache add dnsmasq \
+    && echo "conf-dir=/etc/dnsmasq.d,*.conf" > /etc/dnsmasq.conf
+
+# adding bootstrap & dnsmasq configuration
+COPY bootstrap.sh /usr/local/bin/
+COPY 01_base.conf /etc/dnsmasq.d/
+
+# only root can access bootstrap
+RUN chmod 700 /usr/local/bin/bootstrap.sh
+
+# add presearch system user
+RUN addgroup -S presearch
+RUN adduser -S presearch -D -H -h /dev/null -G presearch -g "presearch"
+
+# boostrapped init
+CMD ["/usr/local/bin/bootstrap.sh"]
+
