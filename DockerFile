@@ -14,6 +14,7 @@ RUN chmod 700 /usr/local/bin/bootstrap.sh
 # add presearch system user
 RUN addgroup -S presearch
 RUN adduser -S presearch -D -H -h /dev/null -G presearch -g "presearch"
+RUN chown -R presearch:presearch /app
 
 # boostrapped init
 CMD ["/usr/local/bin/bootstrap.sh"]
